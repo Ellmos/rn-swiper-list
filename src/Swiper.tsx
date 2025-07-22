@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, type ForwardedRef } from 'react';
+import React, { useImperativeHandle, useState, type ForwardedRef } from 'react';
 import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
 import { Dimensions } from 'react-native';
 import type {
@@ -87,6 +87,8 @@ const Swiper = <T,>(
     flipCard,
   } = useSwipeControls(data, loop);
 
+  const [reactIndex, setReactIndex] = useState(0);
+
   useImperativeHandle(
     ref,
     () => {
@@ -97,9 +99,18 @@ const Swiper = <T,>(
         swipeTop,
         swipeBottom,
         flipCard,
+        activeIndex: reactIndex,
       };
     },
-    [swipeLeft, swipeRight, swipeBack, swipeTop, swipeBottom, flipCard]
+    [
+      swipeLeft,
+      swipeRight,
+      swipeBack,
+      swipeTop,
+      swipeBottom,
+      flipCard,
+      reactIndex,
+    ]
   );
 
   useAnimatedReaction(
@@ -122,6 +133,7 @@ const Swiper = <T,>(
     (currentValue, previousValue) => {
       if (currentValue !== previousValue && onIndexChange) {
         runOnJS(onIndexChange)(currentValue);
+        runOnJS(setReactIndex)(currentValue);
       }
     },
     []
@@ -135,6 +147,8 @@ const Swiper = <T,>(
 
   return data
     .map((item, index) => {
+      if (index - reactIndex >= 5) return null;
+
       return (
         <Card
           key={keyExtractor ? keyExtractor(item, index) : index}

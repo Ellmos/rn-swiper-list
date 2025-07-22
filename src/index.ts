@@ -12,6 +12,7 @@ export type SwiperCardRefType =
       swipeTop: () => void;
       swipeBottom: () => void;
       flipCard: () => void;
+      activeIndex: number;
     }
   | undefined;
 

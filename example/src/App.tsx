@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -15,17 +15,26 @@ import { ActionButton } from '../components';
 
 const IMAGES: ImageSourcePropType[] = [
   require('../assets/images/1.jpg'),
+  require('../assets/images/1.jpg'),
+  require('../assets/images/1.jpg'),
+  require('../assets/images/1.jpg'),
+  require('../assets/images/1.jpg'),
+];
+
+const IMAGES2: ImageSourcePropType[] = [
   require('../assets/images/2.jpg'),
-  require('../assets/images/3.jpg'),
-  require('../assets/images/4.jpg'),
-  require('../assets/images/5.jpg'),
-  require('../assets/images/6.jpg'),
+  require('../assets/images/2.jpg'),
+  require('../assets/images/2.jpg'),
+  require('../assets/images/2.jpg'),
+  require('../assets/images/2.jpg'),
 ];
 
 const ICON_SIZE = 24;
 
 const App = () => {
   const ref = useRef<SwiperCardRefType>();
+
+  const [data, setData] = useState<ImageSourcePropType[]>(IMAGES);
 
   const renderCard = useCallback((image: ImageSourcePropType) => {
     return (
@@ -102,12 +111,15 @@ const App = () => {
       <View style={styles.subContainer}>
         <Swiper
           ref={ref}
-          data={IMAGES}
+          data={data}
           cardStyle={styles.cardStyle}
           overlayLabelContainerStyle={styles.overlayLabelContainerStyle}
           renderCard={renderCard}
           onIndexChange={(index) => {
             console.log('Current Active index', index);
+            if (index === 3) {
+              setData([...IMAGES, ...IMAGES2]);
+            }
           }}
           onSwipeRight={(cardIndex) => {
             console.log('cardIndex', cardIndex);
@@ -173,6 +185,7 @@ const App = () => {
           style={styles.button}
           onTap={() => {
             ref.current?.swipeBottom();
+            console.log('swipeBottom', ref.current?.activeIndex);
           }}
         >
           <AntDesign name="arrowdown" size={ICON_SIZE} color="white" />
@@ -211,7 +224,7 @@ const styles = StyleSheet.create({
     bottom: 34,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 24,
+    gap: 14,
   },
   button: {
     height: 50,

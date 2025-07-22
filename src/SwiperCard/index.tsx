@@ -165,9 +165,18 @@ const SwipeableCard = forwardRef(function SwipeableCard<T>(
         swipeTop,
         swipeBottom,
         flipCard,
+        activeIndex: activeIndex.value,
       };
     },
-    [swipeLeft, swipeRight, swipeBack, swipeTop, swipeBottom, flipCard]
+    [
+      swipeLeft,
+      swipeRight,
+      swipeBack,
+      swipeTop,
+      swipeBottom,
+      flipCard,
+      activeIndex,
+    ]
   );
 
   const inputRangeX = React.useMemo(() => {
