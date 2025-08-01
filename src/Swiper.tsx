@@ -136,7 +136,7 @@ const Swiper = <T,>(
         runOnJS(setReactIndex)(currentValue);
       }
     },
-    []
+    [onIndexChange]
   );
 
   const Card = SwiperCard as unknown as React.ComponentType<
