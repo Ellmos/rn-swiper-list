@@ -36,27 +36,26 @@ const App = () => {
 
   const [data, setData] = useState<ImageSourcePropType[]>(IMAGES);
 
-  const renderCard = useCallback((image: ImageSourcePropType) => {
-    return (
-      <View style={styles.renderCardContainer}>
-        <Image
-          source={image}
-          style={styles.renderCardImage}
-          resizeMode="cover"
-        />
-      </View>
-    );
-  }, []);
-  const renderFlippedCard = useCallback(
-    (_: ImageSourcePropType, index: number) => {
+  const renderCard = useCallback(
+    (image: ImageSourcePropType, index: number) => {
       return (
-        <View style={styles.renderFlippedCardContainer}>
-          <Text style={styles.text}>Flipped content 🚀 {index}</Text>
-        </View>
+        <>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+            index: {index}
+          </Text>
+          <View style={styles.renderCardContainer}>
+            <Image
+              source={image}
+              style={styles.renderCardImage}
+              resizeMode="cover"
+            />
+          </View>
+        </>
       );
     },
     []
   );
+
   const OverlayLabelRight = useCallback(() => {
     return (
       <View
@@ -69,6 +68,7 @@ const App = () => {
       />
     );
   }, []);
+
   const OverlayLabelLeft = useCallback(() => {
     return (
       <View
@@ -81,30 +81,6 @@ const App = () => {
       />
     );
   }, []);
-  const OverlayLabelTop = useCallback(() => {
-    return (
-      <View
-        style={[
-          styles.overlayLabelContainer,
-          {
-            backgroundColor: 'blue',
-          },
-        ]}
-      />
-    );
-  }, []);
-  const OverlayLabelBottom = useCallback(() => {
-    return (
-      <View
-        style={[
-          styles.overlayLabelContainer,
-          {
-            backgroundColor: 'orange',
-          },
-        ]}
-      />
-    );
-  }, []);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -112,95 +88,45 @@ const App = () => {
         <Swiper
           ref={ref}
           data={data}
+          swipeVelocityThreshold={1200}
+          disableTopSwipe={true}
+          disableBottomSwipe={true}
           cardStyle={styles.cardStyle}
           overlayLabelContainerStyle={styles.overlayLabelContainerStyle}
           renderCard={renderCard}
           onIndexChange={(index) => {
-            console.log('Current Active index', index);
             if (index === 3) {
               setData([...IMAGES, ...IMAGES2]);
             }
           }}
-          onSwipeRight={(cardIndex) => {
-            console.log('cardIndex', cardIndex);
+          onSwipeRight={(index: number) => {
+            console.log('onSwipeRight: ', index);
           }}
-          onPress={() => {
-            console.log('onPress');
-          }}
-          onSwipedAll={() => {
-            console.log('onSwipedAll');
-          }}
-          FlippedContent={renderFlippedCard}
-          onSwipeLeft={(cardIndex) => {
-            console.log('onSwipeLeft', cardIndex);
-          }}
-          onSwipeTop={(cardIndex) => {
-            console.log('onSwipeTop', cardIndex);
-          }}
-          onSwipeBottom={(cardIndex) => {
-            console.log('onSwipeBottom', cardIndex);
+          onSwipeLeft={(index: number) => {
+            console.log('onSwipeLeft: ', index);
           }}
           OverlayLabelRight={OverlayLabelRight}
           OverlayLabelLeft={OverlayLabelLeft}
-          OverlayLabelTop={OverlayLabelTop}
-          OverlayLabelBottom={OverlayLabelBottom}
-          onSwipeActive={() => {
-            console.log('onSwipeActive');
-          }}
-          onSwipeStart={() => {
-            console.log('onSwipeStart');
-          }}
-          onSwipeEnd={() => {
-            console.log('onSwipeEnd');
-          }}
         />
       </View>
 
       <View style={styles.buttonsContainer}>
         <ActionButton
           style={styles.button}
-          onTap={() => {
-            ref.current?.flipCard();
-          }}
-        >
-          <AntDesign name="sync" size={ICON_SIZE} color="white" />
-        </ActionButton>
-        <ActionButton
-          style={styles.button}
-          onTap={() => {
-            ref.current?.swipeBack();
-          }}
+          onTap={() => ref.current?.swipeBack()}
         >
           <AntDesign name="reload1" size={ICON_SIZE} color="white" />
         </ActionButton>
         <ActionButton
           style={styles.button}
-          onTap={() => {
-            ref.current?.swipeLeft();
-          }}
+          onTap={() => ref.current?.swipeLeft()}
         >
           <AntDesign name="close" size={ICON_SIZE} color="white" />
         </ActionButton>
         <ActionButton
           style={styles.button}
           onTap={() => {
-            ref.current?.swipeBottom();
-            console.log('ref index', ref.current?.activeIndex);
-          }}
-        >
-          <AntDesign name="arrowdown" size={ICON_SIZE} color="white" />
-        </ActionButton>
-        <ActionButton
-          style={styles.button}
-          onTap={() => {
-            ref.current?.swipeTop();
-          }}
-        >
-          <AntDesign name="arrowup" size={ICON_SIZE} color="white" />
-        </ActionButton>
-        <ActionButton
-          style={styles.button}
-          onTap={() => {
+            console.log(ref.current?.activeIndex);
             ref.current?.swipeRight();
           }}
         >
@@ -224,7 +150,7 @@ const styles = StyleSheet.create({
     bottom: 34,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 14,
+    gap: 24,
   },
   button: {
     height: 50,
@@ -245,18 +171,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: '100%',
     height: '100%',
-  },
-  renderFlippedCardContainer: {
-    borderRadius: 15,
-    backgroundColor: '#baeee5',
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
   },
   cardStyle: {
     width: '90%',
@@ -279,9 +193,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     height: '90%',
     width: '90%',
-  },
-  text: {
-    color: '#001a72',
   },
   overlayLabelContainerStyle: {
     alignItems: 'center',

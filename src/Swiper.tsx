@@ -122,7 +122,7 @@ const Swiper = <T,>(
         runOnJS(onSwipedAll)();
       }
     },
-    [data]
+    [data.length, onSwipedAll]
   );
 
   //Listen to the activeIndex value
@@ -148,6 +148,7 @@ const Swiper = <T,>(
   return data
     .map((item, index) => {
       if (index - reactIndex >= 5) return null;
+      if (index - reactIndex <= -3) return null;
 
       return (
         <Card
