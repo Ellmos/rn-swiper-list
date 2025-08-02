@@ -5,7 +5,7 @@ import type {
   SwiperCardRefType,
   SwiperOptions,
   SwiperCardOptions,
-} from 'rn-swiper-list';
+} from '@ellmos/rn-swiper-list';
 
 import useSwipeControls from './hooks/useSwipeControls';
 import SwiperCard from './SwiperCard';
@@ -26,7 +26,7 @@ const Swiper = <T,>(
   {
     data,
     renderCard,
-    prerenderItems = data.length - 1,
+    prerenderItems = data.length,
     onSwipeRight,
     onSwipeLeft,
     onSwipedAll,

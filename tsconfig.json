@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "rn-swiper-list": ["./src/index"]
+      "@ellmos/rn-swiper-list": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

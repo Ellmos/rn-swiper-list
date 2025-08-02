@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
-import { Swiper, type SwiperCardRefType } from 'rn-swiper-list';
+import { Swiper, type SwiperCardRefType } from '@ellmos/rn-swiper-list';
 
 import { ActionButton } from '../components';
 
@@ -185,7 +185,7 @@ const App = () => {
           style={styles.button}
           onTap={() => {
             ref.current?.swipeBottom();
-            console.log('swipeBottom', ref.current?.activeIndex);
+            console.log('ref index', ref.current?.activeIndex);
           }}
         >
           <AntDesign name="arrowdown" size={ICON_SIZE} color="white" />
