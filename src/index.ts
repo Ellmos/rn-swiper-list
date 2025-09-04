@@ -16,6 +16,14 @@ export type SwiperCardRefType =
     }
   | undefined;
 
+export enum SwipeDirection {
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
+  TOP = 'TOP',
+  BOTTOM = 'BOTTOM',
+  BACK = 'BACK',
+}
+
 export type SwiperOptions<T> = {
   //* Card Props
   data: T[];
