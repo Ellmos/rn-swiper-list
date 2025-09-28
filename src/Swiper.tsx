@@ -1,4 +1,10 @@
-import React, { useImperativeHandle, useState, type ForwardedRef } from 'react';
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useState,
+  type ForwardedRef,
+  type JSX,
+} from 'react';
 import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
 import { Dimensions } from 'react-native';
 import type {
@@ -9,7 +15,7 @@ import type {
 
 import useSwipeControls from './hooks/useSwipeControls';
 import SwiperCard from './SwiperCard';
-import type { SpringConfig } from 'react-native-reanimated/lib/typescript/reanimated2/animation/springUtils';
+import type { SpringConfig } from 'react-native-reanimated/lib/typescript/animation/spring/springConfigs';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('screen');
 
@@ -18,8 +24,8 @@ const SWIPE_SPRING_CONFIG: SpringConfig = {
   stiffness: 50,
   mass: 1,
   overshootClamping: true,
-  restDisplacementThreshold: 0.0001,
-  restSpeedThreshold: 0.0001,
+  energyThreshold: 0.0001,
+  velocity: 0.0001,
 };
 
 const Swiper = <T,>(
@@ -226,10 +232,6 @@ const Swiper = <T,>(
     .reverse(); // to render cards in same hierarchy as their z-index
 };
 
-function fixedForwardRef<T, P = {}>(
-  render: (props: P, ref: React.Ref<T>) => React.ReactNode
-): (props: P & React.RefAttributes<T>) => React.ReactNode {
-  return React.forwardRef(render) as any;
-}
-
-export default fixedForwardRef(Swiper);
+export default forwardRef(Swiper) as <T>(
+  props: SwiperOptions<T> & { ref?: ForwardedRef<SwiperCardRefType> }
+) => JSX.Element;

@@ -7,11 +7,11 @@ import {
   View,
   type ImageSourcePropType,
 } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import { Swiper, type SwiperCardRefType } from '@ellmos/rn-swiper-list';
 
 import { ActionButton } from '../components';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const IMAGES: ImageSourcePropType[] = [
   require('../assets/images/1.jpg'),
@@ -32,7 +32,7 @@ const IMAGES2: ImageSourcePropType[] = [
 const ICON_SIZE = 24;
 
 const App = () => {
-  const ref = useRef<SwiperCardRefType>();
+  const ref = useRef<SwiperCardRefType>(null);
 
   const [data, setData] = useState<ImageSourcePropType[]>(IMAGES);
 
@@ -85,7 +85,7 @@ const App = () => {
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.subContainer}>
-        <Swiper
+        <Swiper<ImageSourcePropType>
           ref={ref}
           data={data}
           swipeVelocityThreshold={1200}
@@ -115,7 +115,7 @@ const App = () => {
           style={styles.button}
           onTap={() => ref.current?.swipeBack()}
         >
-          <AntDesign name="reload1" size={ICON_SIZE} color="white" />
+          <AntDesign name="reload" size={ICON_SIZE} color="white" />
         </ActionButton>
         <ActionButton
           style={styles.button}
